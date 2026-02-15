@@ -1,24 +1,20 @@
 version: 2.1
 
 jobs:
-  build:
-    machine:
-      image: ubuntu-2004:current
-    steps:
-      - checkout
-      - run: echo "Building on Ubuntu"
+  build-job:
+    docker:
+      - image: ubuntu:22.04
 
-  test:
-    machine:
-      image: ubuntu-2004:current
     steps:
       - checkout
-      - run: echo "Testing on Ubuntu"
+      - run:
+          name: Install Node
+          command: |
+            apt update
+            apt install -y nodejs
+            node -v
 
 workflows:
-  build_and_test:
+  build:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
+      - build-job
